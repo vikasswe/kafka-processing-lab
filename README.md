@@ -409,29 +409,41 @@ bin/kafka-console-consumer.sh \
 ## STEP 1: Download & Build Kafka 4.0.0
 
 ```sh
-wget https://downloads.apache.org/kafka/4.0.0/kafka-4.0.0-src.tgz
+wget https://www.apache.org/dyn/closer.lua/kafka/4.2.0/kafka_2.13-4.2.0.tgz
 
-tar -xvzf kafka-4.0.0-src.tgz
-cd kafka-4.0.0-src
-./gradlew clean releaseTarGz
+tar -xvzf kafka_2.13-4.2.0.tgz
+cd kafka_2.13-4.2.0
 
 ```
 
 ## STEP 2: Configure Environment Variables
 
-```sh
-echo "export KAFKA_HOME=\"$HOME/kafka\"" >>~/.bashrc
-echo "export PATH=\$PATH:\$KAFKA_HOME/bin" >>~/.bashrc
-source ~/.bashrc
+```bash
+sudo nano ~/.bashrc
 ```
-
-## STEP 3: Configure server.properties for KRaft Mode - if not found
 
 ```bash
-mkdir -p ~/kafka/config
+export KAFKA_HOME=/usr/local/kafka_2.13-4.2.0
+export PATH=$PATH:$KAFKA_HOME/bin
 ```
 
-Add config that given above line (84 to 139)
+**Apply:**
+
+```bash
+source ~/.bashrc
+
+# Then verify:
+echo $KAFKA_HOME
+
+```
+
+## STEP 3: Update config
+
+```bash
+sudo nano /usr/local/kafka_2.13-4.2.0/config/server.properties
+```
+
+> Add config that given above line (84 to 139)
 
 ## STEP 4: Generate Cluster UUID & Format Storage
 
@@ -449,5 +461,4 @@ bin/kafka-server-start.sh config/server.properties
 # - Topics are created and stored in replicated logs.
 # - Metadata is persisted internally, removing need for ZooKeeper.
 # - Fast failover: if controller fails, another broker takes over quickly.
-
 ```
