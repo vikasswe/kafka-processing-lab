@@ -1,6 +1,8 @@
-// ===============================
-// CONSUMER
-// ===============================
+/**
+ * ===============================
+ * CONSUMER
+ * ===============================
+ */
 
 import { kafka } from "./config/kafka";
 
@@ -34,7 +36,7 @@ const consumer = kafka.consumer({
      * If no heartbeat within 15 sec:
      * Kafka removes consumer from group.
      */
-    sessionTimeout: 15000,
+    sessionTimeout: 60000, // 🔥 increased for safe processing
 
     /**
      * Consumer sends heartbeat every 5 sec.
@@ -42,7 +44,7 @@ const consumer = kafka.consumer({
      * Heartbeat tells Kafka:
      * "I am alive and processing."
      */
-    heartbeatInterval: 5000,
+    heartbeatInterval: 20000, // 🔥 safer for long API calls
 
     /**
      * Time allowed for partition rebalance.
@@ -65,14 +67,16 @@ async function runConsumer() {
     /**
      * Subscribe to Kafka topic.
      *
-     * fromBeginning=true means:
+     * fromBeginning=false means:
      *
      * If offset not found,
-     * start from earliest message.
+     * start from latest message.
+     *
+     * (✔ correct for your requirement: only new data)
      */
     await consumer.subscribe({
         topic: "stress-topic",
-        fromBeginning: true,
+        fromBeginning: false,
     });
 
     console.log("Consumer started");
@@ -132,7 +136,7 @@ async function runConsumer() {
                  * - consumer shutting down
                  * - batch invalid after rebalance
                  */
-                if (!isRunning() || isStale()) break;
+                if (!isRunning() || isStale()) return;
 
                 try {
 
@@ -141,53 +145,51 @@ async function runConsumer() {
                     );
 
                     /**
-                     * Simulate long business processing.
-                     *
-                     * Example:
-                     * - DB insert
-                     * - API call
-                     * - payment processing
+                     * VERY IMPORTANT:
+                     * Heartbeat BEFORE processing
+                     * to ensure consumer is not considered dead
                      */
-                    await sleep(1000);
+                    await heartbeat();
+
+                    /**
+                     * Simulate long business processing.
+                     * (DB / API / payment etc.)
+                     */
+                    await sleep(5000);
+
+                    /**
+                     * Heartbeat AFTER processing too
+                     */
+                    await heartbeat();
 
                     /**
                      * Mark offset as processed.
-                     *
-                     * Offset only resolved AFTER success.
                      */
                     resolveOffset(message.offset);
-
-                    /**
-                     * VERY IMPORTANT
-                     *
-                     * Send heartbeat manually.
-                     *
-                     * Prevents:
-                     * - session timeout
-                     * - rebalance storm
-                     * - consumer eviction
-                     */
-                    await heartbeat();
 
                 } catch (error) {
 
                     /**
                      * Processing failed.
                      *
-                     * Offset not committed,
-                     * so Kafka can retry later.
+                     * Offset NOT committed → Kafka will retry later.
                      */
                     console.error("PROCESS ERROR:", error);
                 }
             }
 
-            /**
-             * Commit processed offsets to Kafka.
-             *
-             * Kafka stores latest successful offset
-             * for this consumer group.
-             */
-            await commitOffsetsIfNecessary();
+            try {
+
+                /**
+                 * Commit processed offsets to Kafka.
+                 */
+                await commitOffsetsIfNecessary();
+
+                console.log("OFFSET COMMITTED");
+
+            } catch (err) {
+                console.error("COMMIT FAILED:", err);
+            }
         },
     });
 }

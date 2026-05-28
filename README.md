@@ -137,6 +137,16 @@ auto.create.topics.enable=false
 # avoid excessive disk flush pressure
 log.flush.interval.ms=5000
 log.flush.interval.messages=10000
+
+##############################################
+# ADDED FOR PRODUCTION STABILITY
+##############################################
+
+# prevents corrupted data from being elected
+unclean.leader.election.enable=false
+
+# ensures better durability even in single broker setups
+min.insync.replicas=1
 ```
 
 # Some commands to execute
