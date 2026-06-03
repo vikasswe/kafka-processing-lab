@@ -3,7 +3,7 @@ import json
 import time
 
 producer = KafkaProducer(
-    bootstrap_servers="192.168.29.13:9092",
+    bootstrap_servers="xxx.xxx.xx.xx:9092",
 
     security_protocol="SASL_PLAINTEXT",
     sasl_mechanism="PLAIN",

@@ -15,7 +15,7 @@ docker run -d \
   --name kafka-ui \
   -p 8080:8080 \
   -e KAFKA_CLUSTERS_0_NAME=local \
-  -e KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=192.168.29.13:9092 \
+  -e KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=xxx.xxx.xx.xx:9092 \
   provectuslabs/kafka-ui
 ```
 
@@ -26,7 +26,7 @@ docker run -d \
   --name kafka-ui \
   -p 8080:8080 \
   -e KAFKA_CLUSTERS_0_NAME=local \
-  -e KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=192.168.29.13:9092 \
+  -e KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=xxx.xxx.xx.xx:9092 \
   -e KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL=SASL_PLAINTEXT \
   -e KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM=PLAIN \
   -e KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG='org.apache.kafka.common.security.plain.PlainLoginModule required username="spade" password="Vikas@123";' \
@@ -59,7 +59,7 @@ akhq:
   connections:
     my-kafka:
       properties:
-        bootstrap.servers: "192.168.29.56:9092"
+        bootstrap.servers: "xxx.xxx.xx.xx:9092"
 ' \
   tchiotludo/akhq:latest
 ```
@@ -75,7 +75,7 @@ akhq:
   connections:
     my-kafka:
       properties:
-        bootstrap.servers: "192.168.29.56:9092"
+        bootstrap.servers: "xxx.xxx.xx.xx:9092"
         security.protocol: SASL_PLAINTEXT
         sasl.mechanism: PLAIN
         sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="YOUR_USERNAME" password="YOUR_PASSWORD";

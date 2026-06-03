@@ -24,9 +24,9 @@ echo "Configuring Kafka settings in config/server.properties..."
 sudo nano config/server.properties
 
 # Add these values in server.properties (ensure your IP and listener settings are correct):
-# zookeeper.connect=192.168.29.56:2181
-# listeners=PLAINTEXT://192.168.29.56:9092
-# advertised.listeners=PLAINTEXT://192.168.29.56:9092
+# zookeeper.connect=xxx.xxx.xx.xx:2181
+# listeners=PLAINTEXT://xxx.xxx.xx.xx:9092
+# advertised.listeners=PLAINTEXT://xxx.xxx.xx.xx:9092
 # listener.security.protocol.map=PLAINTEXT:PLAINTEXT
 # listener.name.default=PLAINTEXT
 
@@ -97,19 +97,19 @@ sudo bin/kafka-topics.sh --delete --topic test --bootstrap-server localhost:9092
 
 # List all Kafka topics in the cluster
 echo "Listing all Kafka topics..."
-bin/kafka-topics.sh --list --bootstrap-server 192.168.29.56:9092
+bin/kafka-topics.sh --list --bootstrap-server xxx.xxx.xx.xx:9092
 
 # **Step 13: Delete All Kafka Topics (Be Careful!)**
 
 # WARNING: This will delete all topics in Kafka! Ensure that you really want to delete everything.
 echo "Deleting all Kafka topics..."
-    kafka-topics.sh --bootstrap-server 192.168.29.56:9092 --list | xargs -I {} kafka-topics.sh --bootstrap-server 192.168.29.56:9092 --delete --topic {}
+    kafka-topics.sh --bootstrap-server xxx.xxx.xx.xx:9092 --list | xargs -I {} kafka-topics.sh --bootstrap-server xxx.xxx.xx.xx:9092 --delete --topic {}
 
 # **Step 14: Delete a Specific Kafka Topic**
 
 # Delete a single topic by name
 echo "Deleting specific Kafka topic (replace <TOPIC_NAME> with the actual topic name)..."
-kafka-topics.sh --bootstrap-server 192.168.29.56:9092 --delete --topic <TOPIC_NAME>
+kafka-topics.sh --bootstrap-server xxx.xxx.xx.xx:9092 --delete --topic <TOPIC_NAME>
 
 # **Step 15: Deleting Zookeeper and Kafka Logs (Be Cautious)**
 
