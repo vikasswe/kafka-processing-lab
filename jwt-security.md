@@ -107,6 +107,7 @@ server {
 ## JWT Flow Diagram
 
 ```mermaid
+%%{init: {'theme': 'dark'}}%%
 flowchart TD
     A[User Login to AKHQ] --> B[Basic Auth username and SHA256 password]
     B --> C[AKHQ validates credentials]
@@ -115,3 +116,4 @@ flowchart TD
     E --> F[Requests to AKHQ API]
     F --> G[JWT validated using secret key]
     G --> H[Access Kafka UI and Topics]
+```
