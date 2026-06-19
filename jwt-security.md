@@ -79,7 +79,7 @@ server {
 
     server_name _;
 
-    location / {
+    location /kafka-server/ {
         proxy_pass http://localhost:4455;
 
         # Standard Forwarding Headers
