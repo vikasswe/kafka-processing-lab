@@ -107,7 +107,7 @@ server {
 ## JWT Flow Diagram
 
 ```mermaid
-%%{init: {'theme': 'dark'}}%%
+%%{init: {'theme': 'forest'}}%%
 flowchart TD
     A[User Login to AKHQ] --> B[Basic Auth username and SHA256 password]
     B --> C[AKHQ validates credentials]
