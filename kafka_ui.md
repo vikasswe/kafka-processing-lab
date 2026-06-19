@@ -89,17 +89,17 @@ akhq:
 
 ```bash
 micronaut:
-  security:
-    enabled: false
+  server:
+    context-path: /kafka-server
 
 akhq:
-  ui-options:
-    logo: "https://www.suhora.com/assets/images/SuhoraLogowhite.svg"
+  security:
+    enabled: false
 
   connections:
     my-kafka:
       properties:
-        bootstrap.servers: "192.168.29.56:9092"
+        bootstrap.servers: "172.31.2.175:9092"
 ```
 
 **Need to run via this command:**

@@ -432,7 +432,7 @@ sudo nano ~/.bashrc
 ```
 
 ```bash
-export KAFKA_HOME=/usr/local/kafka_2.13-4.2.0
+export KAFKA_HOME=/usr/local/kafka_2.13-4.3.0
 export PATH=$PATH:$KAFKA_HOME/bin
 ```
 
