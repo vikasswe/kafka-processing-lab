@@ -104,6 +104,39 @@ server {
 }
 ```
 
+*If file tail is not working in production*:
+
+```nginx
+location /kafka-server/ {
+    # 🚨 FIX 1: Explicitly pass the full URI path to the backend
+    proxy_pass http://localhost:4455;
+
+    # Standard Forwarding Headers
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    # Basic Auth Fixes
+    proxy_set_header Authorization $http_authorization;
+    proxy_pass_header Authorization;
+
+    # Websocket & Streaming Support
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+
+    # 🚨 FIX 2: Turn off response buffering for SSE (/tail/sse)
+    proxy_buffering off;
+    proxy_cache off;
+    chunked_transfer_encoding on;
+
+    # 🚨 FIX 3: Push timeouts to 24h to avoid the 45-second silence timeout
+    proxy_read_timeout 24h;
+    proxy_send_timeout 24h;
+}
+```
+
 ## JWT Flow Diagram
 
 ```mermaid
